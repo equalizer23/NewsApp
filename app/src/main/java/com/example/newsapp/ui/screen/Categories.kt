@@ -102,16 +102,19 @@ fun ArticleContent(
                             fontWeight = FontWeight.Bold,
                             maxLines = 3,
                             overflow = TextOverflow.Ellipsis)
-                        
-                        Row(
+
+                        Text(
+                            text = item.author?: "Not Available",
                             modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(text = item.author?: "Not Available")
-                            Text(text =
-                                MockData.stringToDate(
-                                    item.publishedAt?: "2021-11-10T14:25:20Z").getTimeAgo())
-                        }
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis)
+
+                        Text(
+                            text = MockData.stringToDate(item.publishedAt?: "2021-11-10T14:25:20Z").getTimeAgo(),
+                            modifier.fillMaxWidth(),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis)
+
                     }
                 }
             }

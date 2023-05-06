@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.MockData
 import com.example.newsapp.MockData.getTimeAgo
@@ -33,9 +34,9 @@ import com.skydoves.landscapist.coil.CoilImage
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DetailScreen(article: TopNewsArticle, scrollState: ScrollState, navController: NavController){
+fun DetailScreen(article: TopNewsArticle, scrollState: ScrollState, navController: NavHostController){
     
-    Scaffold(topBar = { DetailTopBar(onBackPressed = {navController.popBackStack()})}) {
+    Scaffold(topBar = { DetailTopBar(navController)}) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -47,11 +48,10 @@ fun DetailScreen(article: TopNewsArticle, scrollState: ScrollState, navControlle
             CoilImage(imageModel = article.urlToImage,
                 contentDescription = "Image",
                 contentScale = ContentScale.Crop)
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween){
+                    .padding(8.dp)){
 
                 InfoWithIcon(image = Icons.Default.Edit, info = article.author?: "Not available")
                 InfoWithIcon(image = Icons.Default.DateRange,
@@ -68,7 +68,7 @@ fun DetailScreen(article: TopNewsArticle, scrollState: ScrollState, navControlle
 
 @Composable
 fun InfoWithIcon(image: ImageVector, info: String){
-    Row(){
+    Row(modifier = Modifier.padding(bottom = 8.dp)){
         Icon(image, contentDescription = "Author", modifier = Modifier.padding(end = 8.dp),
         colorResource(id = R.color.purple_500))
         
@@ -77,11 +77,11 @@ fun InfoWithIcon(image: ImageVector, info: String){
 }
 
 @Composable
-fun DetailTopBar(onBackPressed: ()-> Unit = {}){
+fun DetailTopBar(navHostController: NavHostController){
     TopAppBar(
         title = { Text(text = "Detail Screen", fontWeight = FontWeight.SemiBold)},
         navigationIcon = {
-            IconButton(onClick = {onBackPressed}){
+            IconButton(onClick = {navHostController.popBackStack()}){
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
             }
         }
